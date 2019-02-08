@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  name: Setup ONTAP
+  vars_files:
+  - vars/var_file.yml
+  vars_prompt:
+  - name: "password"
+    prompt: "Password:"
+  tasks:
+  - name: Destroy volume
+    na_ontap_volume:
+      state: "absent"
+      name: "{{ vserver_volname }}"
+      aggregate_name: "{{ vserver_aggr }}"
+      size: 1
+      size_unit: gb
+      policy: "{{ vserver_policy }}"
+      junction_path: "/{{ vserver_volname }}"
+      space_guarantee: "none"
+      vserver: "{{ vserver }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
+  - name: Destroy rules
+    na_ontap_export_policy_rule:
+      state: "absent"
+      policy_name: "{{ vserver_policy }}"
+      vserver: "{{ vserver }}"
+      client_match: "{{ vserver_client }}"
+      ro_rule: sys
+      rw_rule: sys
+      super_user_security: sys
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
+  - name: Destroy Policy
+    na_ontap_export_policy:
+      state: "absent"
+      name: "{{ vserver_policy }}"
+      vserver: "{{ vserver }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false

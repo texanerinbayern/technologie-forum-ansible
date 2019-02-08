@@ -2,10 +2,9 @@
 - hosts: localhost
   name: Setup ONTAP
   gather_facts: no
-  vars:
-    hostname: "172.32.0.182"
-    username: "admin"
-    state: present
+  vars_files:
+  - vars/var_file.yml
+  - vars/licenses.yml
   vars_prompt:
   - name: "password"
     prompt: "Password:"
@@ -16,13 +15,11 @@
       hostname: "{{ hostname }}"
       username: "{{ username }}"
       password: "{{ password }}"
-      #serial_number: #################
       https: true
       validate_certs: false
-      license_codes: CODE1,CODE2
+      license_codes: "{{ esx_licenses }}"
   - name: Assign unowned disks
     na_ontap_disks:
-      state: "{{ state }}"
       node: "{{ item }}"
       https: true
       validate_certs: false

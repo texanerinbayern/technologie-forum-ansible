@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+  name: Remove SVM
+  vars_files:
+  - vars/var_file.yml
+  vars_prompt:
+  - name: "password"
+    prompt: "Password:"
+  tasks:
+
+  - name: Remove default rules
+    na_ontap_export_policy_rule:
+      state: absent
+      policy_name: default
+      vserver: "{{ vserver }}"
+      client_match: "{{ vserver_client }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
+  - name: change nfs status
+    na_ontap_nfs:
+      state: "absent"
+      service_state: stopped
+      vserver: "{{ vserver }}"
+      vstorage_state: disabled
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
+  - name: Remove interface
+    na_ontap_interface:
+      state: absent
+      interface_name: "{{ vserver }}_mgmt_data_1"
+      home_port: e0d
+      home_node: vsim-01
+      vserver: "{{ vserver }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false       
+  - name: Remove SVM
+    na_ontap_svm:
+      state: absent
+      name: "{{ vserver }}"
+      root_volume: "{{ vserver}}_root"
+      root_volume_aggregate: "{{ vserver_aggr }}"
+      root_volume_security_style: unix
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false

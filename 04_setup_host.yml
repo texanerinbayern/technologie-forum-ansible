@@ -1,0 +1,16 @@
+---
+- hosts: all
+  name: Mount
+  vars_files:
+  - vars/var_file.yml
+  tasks:
+  - name: nfs install
+    package:
+      name: nfs-utils
+      state: present
+  - name: Mount nfs export
+    mount:
+      state: mounted
+      path: /mnt/tmp
+      src: "{{ vserver_data_lif }}:/{{ vserver_volname}}"
+      fstype: nfs

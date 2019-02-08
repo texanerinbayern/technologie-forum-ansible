@@ -1,15 +1,10 @@
 ---
 - hosts: localhost
   name: Setup SVM
-  vars:
-    netapp_hostname: "172.32.0.182"
-    netapp_username: "admin"
-    vserver: ansibleSVM
-    address: 172.32.0.183
-    aggr: aggr1
-    state: present
+  vars_files:
+  - vars/var_file.yml
   vars_prompt:
-  - name: "netapp_password"
+  - name: "password"
     prompt: "Password:"
   tasks:
   - name: Create SVM
@@ -17,11 +12,11 @@
       state: "{{ state }}"
       name: "{{ vserver }}"
       root_volume: "{{ vserver}}_root"
-      root_volume_aggregate: "{{ aggr }}"
+      root_volume_aggregate: "{{ vserver_aggr }}"
       root_volume_security_style: unix
-      hostname: "{{ netapp_hostname }}"
-      username: "{{ netapp_username }}"
-      password: "{{ netapp_password }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
       https: true
       validate_certs: false
   - name: Create interface
@@ -34,14 +29,14 @@
       protocols: nfs
       admin_status: up
       failover_policy: local-only
-      firewall_policy: mgmt
+      firewall_policy: mgmt-nfs
       is_auto_revert: true
-      address: "{{ address }}"
-      netmask: 255.255.255.0
+      address: "{{ vserver_address }}"
+      netmask: "{{ vserver_netmask }}"
       vserver: "{{ vserver }}"
-      hostname: "{{ netapp_hostname }}"
-      username: "{{ netapp_username }}"
-      password: "{{ netapp_password }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
       https: true
       validate_certs: false
   - name: change nfs status
@@ -55,9 +50,9 @@
       tcp: enabled
       udp: enabled
       vstorage_state: disabled
-      hostname: "{{ netapp_hostname }}"
-      username: "{{ netapp_username }}"
-      password: "{{ netapp_password }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
       https: true
       validate_certs: false
   - name: Setup default rules
@@ -65,12 +60,12 @@
       state: "{{ state }}"
       policy_name: default
       vserver: "{{ vserver }}"
-      client_match: 0.0.0.0/0
+      client_match: "{{ vserver_client }}"
       ro_rule: any
       rw_rule: none
       super_user_security: none
-      hostname: "{{ netapp_hostname }}"
-      username: "{{ netapp_username }}"
-      password: "{{ netapp_password }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
       https: true
       validate_certs: false

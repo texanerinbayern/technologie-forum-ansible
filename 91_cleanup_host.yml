@@ -1,0 +1,16 @@
+---
+- hosts: all
+  name: Unmount
+  vars_files:
+  - vars/var_file.yml
+  tasks:
+  - name: Unmount nfs export
+    mount:
+      state: absent
+      path: /mnt/tmp
+      src: "{{ vserver_data_lif }}:/{{ vserver_volname}}"
+      fstype: nfs
+  - name: nfs un-install
+    package:
+      name: nfs-utils
+      state: absent
