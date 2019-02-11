@@ -3,9 +3,7 @@
   name: Setup ONTAP
   vars_files:
   - vars/var_file.yml
-  vars_prompt:
-  - name: "password"
-    prompt: "Password:"
+  - vars/password.yml
   tasks:
   - name: Create Policy
     na_ontap_export_policy:

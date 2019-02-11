@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  name: Setup ONTAP
+  name: Setup ONTAP Cluster
   gather_facts: no
   vars_files:
   - vars/var_file.yml

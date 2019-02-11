@@ -1,2 +1,4 @@
 *.retry
 licenses.yml
+decrypt
+password.yml

@@ -3,9 +3,7 @@
   name: Setup SVM
   vars_files:
   - vars/var_file.yml
-  vars_prompt:
-  - name: "password"
-    prompt: "Password:"
+  - vars/password.yml
   tasks:
   - name: Create SVM
     na_ontap_svm:
