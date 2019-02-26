@@ -10,5 +10,3 @@ vserver_netmask: 255.255.255.0
 vserver_aggr: aggr1
 vserver_client: 0.0.0.0/0
 vserver_data_lif: 192.168.11.63
-
-password: NetApp01234

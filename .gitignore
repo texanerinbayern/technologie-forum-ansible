@@ -1,5 +1,7 @@
+.DS_Store
 *.retry
 licenses.yml
 decrypt
 password.yml
 casts/
+images/
