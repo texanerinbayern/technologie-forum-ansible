@@ -17,7 +17,7 @@
       password: "{{ password }}"
       https: true
       validate_certs: false
-      license_codes: "{{ esx_licenses }}"
+      license_codes: "{{ ntap_licenses }}"
   - name: Assign unowned disks
     na_ontap_disks:
       node: "{{ item }}"
