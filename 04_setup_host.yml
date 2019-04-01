@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: netapp_guest
   name: Mount
   vars_files:
   - vars/var_file.yml
