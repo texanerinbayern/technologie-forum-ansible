@@ -3,17 +3,20 @@
   name: Setup ONTAP
   vars_files:
   - var_file.yml
+  vars:
+    login: &login
+      hostname: "{{ cluster_name }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
   tasks:
   - name: Create Policy
     na_ontap_export_policy:
       state: "{{ state }}"
       name: "{{ policy }}"
       vserver: "{{ vserver }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: Setup rules
     na_ontap_export_policy_rule:
       state: "{{ state }}"
@@ -23,11 +26,7 @@
       ro_rule: sys
       rw_rule: sys
       super_user_security: sys
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: Create volume
     na_ontap_volume:
       state: "{{ state }}"
@@ -39,11 +38,7 @@
       junction_path: "/{{ volname }}"
       space_guarantee: "none"
       vserver: "{{ vserver }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
 - hosts: all
   name: Mount
   vars_files:

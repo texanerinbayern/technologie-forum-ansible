@@ -8,15 +8,20 @@
   vars_prompt:
   - name: "password"
     prompt: "Password:"
-  tasks:
-  - name: Add licenses
-    na_ontap_license:
-      state: present
-      hostname: "{{ hostname }}"
+
+  vars:
+    login: &login
+      hostname: "{{ cluster_name }}"
       username: "{{ username }}"
       password: "{{ password }}"
       https: true
       validate_certs: false
+
+  tasks:
+  - name: Add licenses
+    na_ontap_license:
+      state: present
+      <<: *login 
       license_codes: "{{ ntap_licenses }}"
   - name: Assign unowned disks
     na_ontap_disks:
@@ -28,14 +33,15 @@
       password: "{{ password }}"
     with_items:
       - vsim-01
-      - vsim-02
+
+
   - name: Create Aggrs
     na_ontap_aggregate:
       state: "{{ state }}"
       name: "{{ item.name }}"
       nodes: "{{ item.node }}"
-      disk_count: 26
-      raid_size: 26
+      disk_count: 25
+      raid_size: 25
       https: true
       validate_certs: false
       hostname: "{{ hostname }}"
@@ -43,6 +49,4 @@
       password: "{{ password }}"
     with_items:
       - { name: "aggr1", node: "vsim-01" }
-      - { name: "aggr2", node: "vsim-01" }
-      - { name: "aggr3", node: "vsim-02" }
-      - { name: "aggr4", node: "vsim-02" }
+

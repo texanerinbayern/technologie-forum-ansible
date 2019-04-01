@@ -4,6 +4,13 @@
   vars_files:
   - vars/var_file.yml
   - vars/password.yml
+  vars:
+    login: &login
+      hostname: "{{ cluster_name }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
   tasks:
   - name: Create SVM
     na_ontap_svm:
@@ -12,11 +19,7 @@
       root_volume: "{{ vserver}}_root"
       root_volume_aggregate: "{{ vserver_aggr }}"
       root_volume_security_style: unix
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: Create interface
     na_ontap_interface:
       state: "{{ state }}"
@@ -32,11 +35,7 @@
       address: "{{ vserver_address }}"
       netmask: "{{ vserver_netmask }}"
       vserver: "{{ vserver }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: change nfs status
     na_ontap_nfs:
       state: "{{ state }}"
@@ -48,11 +47,7 @@
       tcp: enabled
       udp: enabled
       vstorage_state: disabled
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: Setup default rules
     na_ontap_export_policy_rule:
       state: "{{ state }}"
@@ -62,8 +57,4 @@
       ro_rule: any
       rw_rule: none
       super_user_security: none
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 

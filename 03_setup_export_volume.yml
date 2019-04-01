@@ -4,17 +4,22 @@
   vars_files:
   - vars/var_file.yml
   - vars/password.yml
+
+  vars:
+    login: &login
+      hostname: "{{ cluster_name }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
+
   tasks:
   - name: Create Policy
     na_ontap_export_policy:
       state: "{{ state }}"
       name: "{{ vserver_policy }}"
       vserver: "{{ vserver }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: Setup rules
     na_ontap_export_policy_rule:
       state: "{{ state }}"
@@ -24,11 +29,7 @@
       ro_rule: sys
       rw_rule: sys
       super_user_security: sys
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: Create volume
     na_ontap_volume:
       state: "{{ state }}"
@@ -40,8 +41,4 @@
       junction_path: "/{{ vserver_volname }}"
       space_guarantee: "none"
       vserver: "{{ vserver }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 

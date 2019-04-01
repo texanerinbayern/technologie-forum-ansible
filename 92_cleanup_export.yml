@@ -6,6 +6,13 @@
   vars_prompt:
   - name: "password"
     prompt: "Password:"
+  vars:
+    login: &login
+      hostname: "{{ cluster_name }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
   tasks:
   - name: Destroy volume
     na_ontap_volume:
@@ -18,11 +25,7 @@
       junction_path: "/{{ vserver_volname }}"
       space_guarantee: "none"
       vserver: "{{ vserver }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: Destroy rules
     na_ontap_export_policy_rule:
       state: "absent"
@@ -32,18 +35,10 @@
       ro_rule: sys
       rw_rule: sys
       super_user_security: sys
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: Destroy Policy
     na_ontap_export_policy:
       state: "absent"
       name: "{{ vserver_policy }}"
       vserver: "{{ vserver }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 

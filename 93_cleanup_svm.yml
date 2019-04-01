@@ -6,6 +6,13 @@
   vars_prompt:
   - name: "password"
     prompt: "Password:"
+  vars:
+    login: &login
+      hostname: "{{ cluster_name }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
   tasks:
 
   - name: Remove default rules
@@ -14,22 +21,14 @@
       policy_name: default
       vserver: "{{ vserver }}"
       client_match: "{{ vserver_client }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: change nfs status
     na_ontap_nfs:
       state: "absent"
       service_state: stopped
       vserver: "{{ vserver }}"
       vstorage_state: disabled
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
   - name: Remove interface
     na_ontap_interface:
       state: absent
@@ -37,11 +36,7 @@
       home_port: e0d
       home_node: vsim-01
       vserver: "{{ vserver }}"
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false       
+      <<: *login        
   - name: Remove SVM
     na_ontap_svm:
       state: absent
@@ -49,8 +44,4 @@
       root_volume: "{{ vserver}}_root"
       root_volume_aggregate: "{{ vserver_aggr }}"
       root_volume_security_style: unix
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      https: true
-      validate_certs: false
+      <<: *login 
