@@ -2,11 +2,13 @@
 - hosts: localhost
   gather_facts: false
   name: Setup ONTAP
+
   vars_files:
   - vars/var_file.yml
 #     vars_prompt:
 #  - name: "password"
 #    prompt: "Password:"
+
   vars:
     login: &login
       hostname: "{{ cluster_name }}"
@@ -14,6 +16,7 @@
       password: "netapp01"
       https: true
       validate_certs: false
+
   tasks:
   - name: Destroy volume
     na_ontap_volume:
@@ -27,6 +30,7 @@
       space_guarantee: "none"
       vserver: "{{ vserver }}"
       <<: *login 
+
   - name: Destroy rules
     na_ontap_export_policy_rule:
       state: "absent"
@@ -37,6 +41,7 @@
       rw_rule: sys
       super_user_security: sys
       <<: *login 
+
   - name: Destroy Policy
     na_ontap_export_policy:
       state: "absent"
