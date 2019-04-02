@@ -20,6 +20,7 @@
       root_volume_aggregate: "{{ vserver_aggr }}"
       root_volume_security_style: unix
       <<: *login 
+
   - name: Create interface
     na_ontap_interface:
       state: "{{ state }}"
@@ -36,6 +37,7 @@
       netmask: "{{ vserver_netmask }}"
       vserver: "{{ vserver }}"
       <<: *login 
+
   - name: change nfs status
     na_ontap_nfs:
       state: "{{ state }}"
@@ -48,6 +50,7 @@
       udp: enabled
       vstorage_state: disabled
       <<: *login 
+
   - name: Setup default rules
     na_ontap_export_policy_rule:
       state: "{{ state }}"
