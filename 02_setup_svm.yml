@@ -3,7 +3,7 @@
   name: Setup SVM
   vars_files:
   - vars/var_file.yml
-  - vars/password.yml
+#  - vars/password.yml
   vars:
     login: &login
       hostname: "{{ cluster_name }}"
