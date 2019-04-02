@@ -40,5 +40,5 @@
       raid_size: 25
       <<: *login 
     with_items:
-      - { name: "aggr1", node: "vsim-01" }
+      - { name: "aggr1_vsim_01", node: "vsim-01" }
 
