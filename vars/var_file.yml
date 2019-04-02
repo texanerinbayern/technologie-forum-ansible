@@ -1,4 +1,4 @@
-hostname: "192.168.58.4"
+cluster_name: "192.168.58.4"
 username: "admin"
 state: present
 
