@@ -2,12 +2,14 @@
 - hosts: localhost
   gather_facts: false
   name: Setup ONTAP Cluster
+
   vars_files:
   - vars/var_file.yml
   - vars/licenses.yml
 #     vars_prompt:
 #  - name: "password"
 #    prompt: "Password:"
+
   vars:
     login: &login
       hostname: "{{ cluster_name }}"
@@ -28,7 +30,6 @@
       <<: *login 
     with_items:
       - vsim-01
-
 
   - name: Create Aggrs
     na_ontap_aggregate:

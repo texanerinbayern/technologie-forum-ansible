@@ -2,6 +2,7 @@
 - hosts: localhost
   gather_facts: false
   name: Setup ONTAP
+
   vars_files:
   - vars/var_file.yml
 #  - vars/password.yml
@@ -21,6 +22,7 @@
       name: "{{ vserver_policy }}"
       vserver: "{{ vserver }}"
       <<: *login 
+
   - name: Setup rules
     na_ontap_export_policy_rule:
       state: "{{ state }}"
@@ -31,6 +33,7 @@
       rw_rule: sys
       super_user_security: sys
       <<: *login 
+
   - name: Create volume
     na_ontap_volume:
       state: "{{ state }}"
@@ -42,4 +45,4 @@
       junction_path: "/{{ vserver_volname }}"
       space_guarantee: "none"
       vserver: "{{ vserver }}"
-      <<: *login 
+      <<: *login
