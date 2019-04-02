@@ -1,8 +1,12 @@
 ---
 - hosts: all
   name: Unmount
+  become: yes
+  become_method: sudo
+
   vars_files:
   - vars/var_file.yml
+  
   tasks:
   - name: Unmount nfs export
     mount:
