@@ -1,5 +1,6 @@
 ---
 - hosts: localhost
+  gather_facts: false
   name: Setup SVM
   vars_files:
   - vars/var_file.yml
