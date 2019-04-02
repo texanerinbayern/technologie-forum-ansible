@@ -7,32 +7,25 @@
     login: &login
       hostname: "{{ cluster_name }}"
       username: "{{ username }}"
-      password: "{{ password }}"
+      password: "netapp01"
       https: true
       validate_certs: false
   tasks:
   - name: Add licenses
     na_ontap_license:
       state: present
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
       #serial_number: #################
-      https: true
-      validate_certs: false
       license_codes: [Your licenses]
+      <<: *login 
+
   - name: Assign unowned disks
     na_ontap_disks:
       state: "{{ state }}"
       node: "{{ item }}"
-      https: true
-      validate_certs: false
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
+      <<: *login 
     with_items:
       - vsim-01
-      - vsim-02
+
   - name: Create Aggrs
     na_ontap_aggregate:
       state: "{{ state }}"
@@ -40,16 +33,10 @@
       nodes: "{{ item.node }}"
       disk_count: 26
       raid_size: 26
-      https: true
-      validate_certs: false
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
+      <<: *login 
     with_items:
       - { name: "aggr1", node: "vsim-01" }
-      - { name: "aggr2", node: "vsim-01" }
-      - { name: "aggr3", node: "vsim-02" }
-      - { name: "aggr4", node: "vsim-02" }
+
   - name: Create SVM
     na_ontap_svm:
       state: "{{ state }}"
@@ -58,6 +45,7 @@
       root_volume_aggregate: "{{ aggr }}"
       root_volume_security_style: unix
       <<: *login 
+
   - name: Create interface
     na_ontap_interface:
       state: "{{ state }}"
@@ -74,6 +62,7 @@
       netmask: 255.255.255.0
       vserver: "{{ vserver }}"
       <<: *login 
+
   - name: change nfs status
     na_ontap_nfs:
       state: "{{ state }}"
@@ -96,6 +85,7 @@
       rw_rule: none
       super_user_security: none
       <<: *login 
+
   - name: Create Policy
     na_ontap_export_policy:
       state: "{{ state }}"
@@ -124,6 +114,7 @@
       space_guarantee: "none"
       vserver: "{{ vserver }}"
       <<: *login 
+
 - hosts: all
   name: Mount
   vars_files:

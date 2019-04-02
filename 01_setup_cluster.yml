@@ -5,15 +5,14 @@
   vars_files:
   - vars/var_file.yml
   - vars/licenses.yml
-  vars_prompt:
-  - name: "password"
-    prompt: "Password:"
-
+#     vars_prompt:
+#  - name: "password"
+#    prompt: "Password:"
   vars:
     login: &login
       hostname: "{{ cluster_name }}"
       username: "{{ username }}"
-      password: "{{ password }}"
+      password: "netapp01"
       https: true
       validate_certs: false
 
@@ -28,9 +27,7 @@
       node: "{{ item }}"
       https: true
       validate_certs: false
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
+      <<: *login 
     with_items:
       - vsim-01
 
@@ -44,9 +41,7 @@
       raid_size: 25
       https: true
       validate_certs: false
-      hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
+      <<: *login 
     with_items:
       - { name: "aggr1", node: "vsim-01" }
 

@@ -14,7 +14,7 @@
       na_elementsw_admin_users:
         hostname: "{{ hostname }}"
         username: "{{ username }}"
-        password: "{{ password }}" 
+        password: "netapp01" 
         state: "{{ state }}"
         element_username: "{{ new_user }}"
         element_password: "{{ new_pass }}"

@@ -13,7 +13,7 @@
       na_elementsw_snapshot_restore:
         hostname: "{{ hostname }}"
         username: "{{ username }}"
-        password: "{{ password }}" 
+        password: "netapp01" 
         src_volume_id: "{{ volname }}"
         dest_volume_name: "{{ destvol }}"
         account_id: "{{ account }}"

@@ -17,7 +17,7 @@
       na_elementsw_account:
         hostname: "{{ hostname }}"
         username: "{{ username }}"
-        password: "{{ password }}" 
+        password: "netapp01" 
         state: "{{ state }}"
         element_username: "{{ account }}"
         initiator_secret: "{{ secret }}" 
@@ -25,7 +25,7 @@
       na_elementsw_volume:
         hostname: "{{ hostname }}"
         username: "{{ username }}"
-        password: "{{ password }}" 
+        password: "netapp01" 
         state: "{{ state }}"
         name: "{{ volname }}"
         qos: {minIOPS: "{{ min }}", maxIOPS: "{{ max }}", burstIOPS: "{{ burst }}"}

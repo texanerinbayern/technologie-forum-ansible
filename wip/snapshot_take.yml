@@ -13,7 +13,7 @@
       na_elementsw_snapshot:
         hostname: "{{ hostname }}"
         username: "{{ username }}"
-        password: "{{ password }}" 
+        password: "netapp01" 
         state: "{{ state }}"
         src_volume_id: "{{ volname }}"
         account_id: "{{ account }}"

@@ -3,14 +3,14 @@
   name: Remove SVM
   vars_files:
   - vars/var_file.yml
-  vars_prompt:
-  - name: "password"
-    prompt: "Password:"
+#     vars_prompt:
+#  - name: "password"
+#    prompt: "Password:"  
   vars:
     login: &login
       hostname: "{{ cluster_name }}"
       username: "{{ username }}"
-      password: "{{ password }}"
+      password: "netapp01"
       https: true
       validate_certs: false
   tasks:
