@@ -1,6 +1,8 @@
 ---
 - hosts: netapp_guest
   name: Mount
+  become: yes
+  become_method: sudo
   vars_files:
   - vars/var_file.yml
   tasks:
